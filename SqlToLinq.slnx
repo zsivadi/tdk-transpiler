@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SqlToLinq.Core/SqlToLinq.Core.csproj" />
+  <Project Path="SqlToLinq.Web/SqlToLinq.Web.csproj" />
+</Solution>

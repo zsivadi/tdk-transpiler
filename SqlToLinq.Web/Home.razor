@@ -1,0 +1,207 @@
+@page "/"
+@inject IJSRuntime JS
+@using Microsoft.JSInterop
+@using SqlToLinq.Core
+
+<div class="container">
+    <header>
+        <h1>SQL <span class="arrow">→</span> LINQ</h1>
+        <p class="subtitle">@T("subtitle")</p>
+    </header>
+
+    <div class="editor-row">
+        <div class="panel">
+            <div class="panel-header">
+                <span>&gt;_ @T("sql_input")</span>
+                <button class="btn-secondary" @onclick="LoadExample">@T("example")</button>
+            </div>
+            <textarea
+                class="code-editor"
+                @bind="SqlInput"
+                @bind:event="oninput"
+                placeholder="@T("sql_placeholder")"
+                spellcheck="false">
+            </textarea>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span>&gt;_ @T("linq_output")</span>
+                <button class="btn-secondary" @onclick="CopyToClipboard" disabled="@(string.IsNullOrEmpty(LinqOutput))">@T("copy")</button>
+            </div>
+            <textarea
+                class="code-editor output"
+                value="@LinqOutput"
+                readonly
+                placeholder="@T("linq_placeholder")">
+            </textarea>
+        </div>
+    </div>
+
+    <div class="action-row">
+        <button class="btn-primary" @onclick="Convert">@T("convert")</button>
+        <button class="btn-secondary" @onclick="ToggleAst" disabled="@(string.IsNullOrEmpty(LinqOutput))">
+            @(ShowAst ? T("ast_hide") : T("ast_show"))
+        </button>
+        <button class="btn-secondary" @onclick="Clear">@T("clear")</button>
+        <button class="btn-lang" @onclick="ToggleLanguage">@(Lang == "hu" ? "EN" : "HU")</button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ConversionTime)) {
+        <div class="timing">
+            @T("timing"): <strong>@ConversionTime</strong>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(ErrorMessage)) {
+        <div class="error-box">
+            @ErrorMessage
+        </div>
+    }
+
+    @if (ShowAst && !string.IsNullOrEmpty(SqlAstDot)) {
+        <div class="ast-panel-full">
+            <div class="ast-tabs">
+                <button class="ast-tab @(ActiveAstTab == "sql" ? "active" : "")"
+                        @onclick='() => SwitchAstTab("sql")'>@T("sql_tree")</button>
+                <button class="ast-tab @(ActiveAstTab == "linq" ? "active" : "")"
+                        @onclick='() => SwitchAstTab("linq")'>@T("linq_ast")</button>
+            </div>
+            <div class="ast-graph-full">
+                <div id="sql-graph" style="display: @(ActiveAstTab == "sql" ? "block" : "none")"></div>
+                <div id="linq-graph" style="display: @(ActiveAstTab == "linq" ? "block" : "none")"></div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private string SqlInput { get; set; } = string.Empty;
+    private string LinqOutput { get; set; } = string.Empty;
+    private string ErrorMessage { get; set; } = string.Empty;
+    private string SqlAstDot { get; set; } = string.Empty;
+    private string LinqAstDot { get; set; } = string.Empty;
+    private string ConversionTime { get; set; } = string.Empty;
+    private bool ShowAst { get; set; } = false;
+    private string ActiveAstTab { get; set; } = "sql";
+    private string Lang { get; set; } = "hu";
+
+    private static readonly Dictionary<string, Dictionary<string, string>> Translations = new() {
+        ["hu"] = new() {
+            ["subtitle"]        = "SQL:1999 — EF Core 8.0 · determinisztikus · provider-független",
+            ["sql_input"]       = "sql bemenet",
+            ["linq_output"]     = "generált linq",
+            ["example"]         = "példa",
+            ["copy"]            = "másolás",
+            ["convert"]         = "fordítás",
+            ["ast_show"]        = "ast megjelenítése",
+            ["ast_hide"]        = "ast elrejtése",
+            ["clear"]           = "törlés",
+            ["timing"]          = "fordítási idő",
+            ["sql_tree"]        = "sql parse fa",
+            ["linq_ast"]        = "linq ast",
+            ["sql_placeholder"] = "SELECT * FROM Users WHERE Age > 18 ORDER BY Name ASC",
+            ["linq_placeholder"]= "a generált linq kód itt jelenik meg...",
+        },
+        ["en"] = new() {
+            ["subtitle"]        = "SQL:1999 — EF Core 8.0 · deterministic · provider-independent",
+            ["sql_input"]       = "sql input",
+            ["linq_output"]     = "generated linq",
+            ["example"]         = "example",
+            ["copy"]            = "copy",
+            ["convert"]         = "translate",
+            ["ast_show"]        = "show ast",
+            ["ast_hide"]        = "hide ast",
+            ["clear"]           = "clear",
+            ["timing"]          = "translation time",
+            ["sql_tree"]        = "sql parse tree",
+            ["linq_ast"]        = "linq ast",
+            ["sql_placeholder"] = "SELECT * FROM Users WHERE Age > 18 ORDER BY Name ASC",
+            ["linq_placeholder"]= "generated linq code will appear here...",
+        }
+    };
+
+    private string T(string key) =>
+        Translations.TryGetValue(Lang, out var dict) && dict.TryGetValue(key, out var val)
+            ? val : key;
+
+    private void ToggleLanguage() {
+        Lang = Lang == "hu" ? "en" : "hu";
+    }
+
+    private void Convert() {
+        ErrorMessage = string.Empty;
+        LinqOutput = string.Empty;
+        SqlAstDot = string.Empty;
+        LinqAstDot = string.Empty;
+        ConversionTime = string.Empty;
+        ShowAst = false;
+
+        if (string.IsNullOrWhiteSpace(SqlInput)) {
+            ErrorMessage = Lang == "hu"
+                ? "Kérem adjon meg egy SQL lekérdezést."
+                : "Please enter an SQL query.";
+            return;
+        }
+
+        try {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            var (linq, sqlDot, linqDot) = SqlToLinqConverter.ConvertWithAst(SqlInput);
+            sw.Stop();
+            LinqOutput = linq;
+            SqlAstDot = sqlDot;
+            LinqAstDot = linqDot;
+            ConversionTime = $"{sw.ElapsedMilliseconds} ms";
+        } catch (Exception ex) {
+            ErrorMessage = ex.Message;
+        }
+    }
+
+    private async Task ToggleAst() {
+        ShowAst = !ShowAst;
+
+        if (ShowAst) {
+            await Task.Delay(50);
+            await JS.InvokeVoidAsync("renderDot", "sql-graph", SqlAstDot);
+            await JS.InvokeVoidAsync("renderDot", "linq-graph", LinqAstDot);
+        }
+    }
+
+    private async Task CopyToClipboard() {
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", LinqOutput);
+    }
+
+    private void LoadExample() {
+        SqlInput = "SELECT u.Name, u.Role, o.Item, COUNT(*) AS OrderCount\n" +
+                   "FROM Users u\n" +
+                   "JOIN Orders o ON u.Id = o.Owner\n" +
+                   "WHERE u.Age > 18 AND u.Role IN ('Admin', 'Moderator')\n" +
+                   "GROUP BY u.Name, u.Role, o.Item\n" +
+                   "HAVING COUNT(*) > 1\n" +
+                   "ORDER BY u.Name ASC\n" +
+                   "LIMIT 10;";
+    }
+
+    private void Clear() {
+        SqlInput = string.Empty;
+        LinqOutput = string.Empty;
+        ErrorMessage = string.Empty;
+        SqlAstDot = string.Empty;
+        LinqAstDot = string.Empty;
+        ConversionTime = string.Empty;
+        ShowAst = false;
+    }
+
+    private async Task SwitchAstTab(string tab) {
+        ActiveAstTab = tab;
+    }
+	
+	protected override async Task OnInitializedAsync() {
+    await Task.Run(() => {
+        try {
+			SqlToLinqConverter.Convert("SELECT * FROM Users WHERE Age > 18");
+            SqlToLinqConverter.Convert("SELECT u.Name FROM Users u JOIN Orders o ON u.Id = o.Owner"); 
+		} catch { }
+    });
+	}
+}

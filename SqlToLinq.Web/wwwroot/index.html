@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQL → LINQ Fordító</title>
+    <base href="/" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+    <div id="app">
+        <div class="loading">
+            <p>Betöltés...</p>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        Váratlan hiba lépett fel.
+        <a href="" class="reload">Újratöltés</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <!-- d3-graphviz a DOT gráf megjelenítéséhez -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/graphviz/2.6.0/graphviz.umd.min.js" 
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/d3-graphviz@5.6.0/build/d3-graphviz.js"></script>
+
+    <script>
+        function renderDot(elementId, dotSource) {
+            try {
+                d3.select("#" + elementId)
+                    .graphviz()
+                    .fit(true)
+                    .renderDot(dotSource);
+            } catch (e) {
+                console.error("Graphviz render error:", e);
+            }
+        }
+    </script>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+</html>
