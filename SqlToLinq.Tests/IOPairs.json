@@ -1,0 +1,1681 @@
+[
+	{
+		"Id": 1,
+		"Desc": "Lekérdezés oszlopkiválasztás nélkül.",
+		"SqlInput": "SELECT * FROM Users",
+		"ExpectedLinq": "db.Users.ToList()"
+	},
+	{
+		"Id": 2,
+		"Desc": "Lekérdezés oszlopkiválasztással.",
+		"SqlInput": "SELECT Id FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Id }).ToList()"
+	},
+	{
+		"Id": 3,
+		"Desc": "Két oszlop vesszővel elválasztva.",
+		"SqlInput": "SELECT Id, Name FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Id, x.Name }).ToList()"
+	},
+	{
+		"Id": 4,
+		"Desc": "Három oszlop több vesszővel elválasztva.",
+		"SqlInput": "SELECT Id, Name, Age FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Id, x.Name, x.Age }).ToList()"
+	},
+	{
+		"Id": 5,
+		"Desc": "Nagyobb mint feltétel.",
+		"SqlInput": "SELECT * FROM Users WHERE Age > 18",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 18).ToList()"
+	},
+	{
+		"Id": 6,
+		"Desc": "Kisebb mint feltétel.",
+		"SqlInput": "SELECT * FROM Users WHERE Age < 18",
+		"ExpectedLinq": "db.Users.Where(x => x.Age < 18).ToList()"
+	},
+	{
+		"Id": 7,
+		"Desc": "Nagyobb vagy egyenlő feltétel.",
+		"SqlInput": "SELECT * FROM Users WHERE Age >= 18",
+		"ExpectedLinq": "db.Users.Where(x => x.Age >= 18).ToList()"
+	},
+	{
+		"Id": 8,
+		"Desc": "Kisebb vagy egyenlő feltétel.",
+		"SqlInput": "SELECT * FROM Users WHERE Age <= 18",
+		"ExpectedLinq": "db.Users.Where(x => x.Age <= 18).ToList()"
+	},
+	{
+		"Id": 9,
+		"Desc": "Egyenlő feltétel.",
+		"SqlInput": "SELECT * FROM Users WHERE Age = 18",
+		"ExpectedLinq": "db.Users.Where(x => x.Age == 18).ToList()"
+	},
+	{
+		"Id": 10,
+		"Desc": "Nem egyenlő feltétel.",
+		"SqlInput": "SELECT * FROM Users WHERE Age <> 18",
+		"ExpectedLinq": "db.Users.Where(x => x.Age != 18).ToList()"
+	},
+	{
+		"Id": 11,
+		"Desc": "Szöveges egyenlőség.",
+		"SqlInput": "SELECT * FROM Users WHERE Name = 'Admin'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Admin\").ToList()"
+	},
+	{
+		"Id": 12,
+		"Desc": "Szöveges nem egyenlő.",
+		"SqlInput": "SELECT * FROM Users WHERE Role <> 'Guest'",
+		"ExpectedLinq": "db.Users.Where(x => x.Role != \"Guest\").ToList()"
+	},
+	{
+		"Id": 13,
+		"Desc": "Két oszlop összehasonltása.",
+		"SqlInput": "SELECT * FROM Users WHERE Points > Bonus",
+		"ExpectedLinq": "db.Users.Where(x => x.Points > x.Bonus).ToList()"
+	},
+	{
+		"Id": 14,
+		"Desc": "AND operátor átalaktása.",
+		"SqlInput": "SELECT * FROM Users WHERE Age >= 18 AND Role = 'Admin'",
+		"ExpectedLinq": "db.Users.Where(x => x.Age >= 18 && x.Role == \"Admin\").ToList()"
+	},
+	{
+		"Id": 15,
+		"Desc": "OR operátor átalaktása.",
+		"SqlInput": "SELECT * FROM Users WHERE Age >= 18 OR Role = 'Admin'",
+		"ExpectedLinq": "db.Users.Where(x => x.Age >= 18 || x.Role == \"Admin\").ToList()"
+	},
+	{
+		"Id": 16,
+		"Desc": "Zárójelkezelés.",
+		"SqlInput": "SELECT * FROM Users WHERE (Points > 100 OR Bonus > 50) AND Age < 30",
+		"ExpectedLinq": "db.Users.Where(x => (x.Points > 100 || x.Bonus > 50) && x.Age < 30).ToList()"
+	},
+	{
+		"Id": 17,
+		"Desc": "Matematikai kifejezések.",
+		"SqlInput": "SELECT * FROM Users WHERE Points + Bonus >= 150",
+		"ExpectedLinq": "db.Users.Where(x => x.Points + x.Bonus >= 150).ToList()"
+	},
+	{
+		"Id": 18,
+		"Desc": "Kisbetű érzékenység.",
+		"SqlInput": "select * from users",
+		"ExpectedLinq": "db.Users.ToList()"
+	},
+	{
+		"Id": 19,
+		"Desc": "Többszörös szóközök.",
+		"SqlInput": "SELECT  * FROM  Users",
+		"ExpectedLinq": "db.Users.ToList()"
+	},
+	{
+		"Id": 20,
+		"Desc": "Szóközök hiánya az operátorok és vesszők körül.",
+		"SqlInput": "SELECT Name,Age FROM Users WHERE Age>18",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 18).Select(x => new { x.Name, x.Age }).ToList()"
+	},
+	{
+		"Id": 21,
+		"Desc": "Szóközök a szövegen belül és sortörés.",
+		"SqlInput": "SELECT * FROM Users \nWHERE Name = 'Nagy Peti'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Nagy Peti\").ToList()"
+	},
+	{
+		"Id": 22,
+		"Desc": "Oszlopválasztás láncolása és sortörés.",
+		"SqlInput": "SELECT Name FROM Users \nWHERE Age >= 21",
+		"ExpectedLinq": "db.Users.Where(x => x.Age >= 21).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 23,
+		"Desc": "Növekvő rendezés.",
+		"SqlInput": "SELECT * FROM Users ORDER BY Age",
+		"ExpectedLinq": "db.Users.OrderBy(x => x.Age).ToList()"
+	},
+	{
+		"Id": 24,
+		"Desc": "Csökkenő rendezés.",
+		"SqlInput": "SELECT * FROM Users ORDER BY Age DESC",
+		"ExpectedLinq": "db.Users.OrderByDescending(x => x.Age).ToList()"
+	},
+	{
+		"Id": 25,
+		"Desc": "Többszörös rendezés.",
+		"SqlInput": "SELECT Name FROM Users ORDER BY Age DESC, Name ASC",
+		"ExpectedLinq": "db.Users.OrderByDescending(x => x.Age).ThenBy(x => x.Name).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 26,
+		"Desc": "% a feltétel végén.",
+		"SqlInput": "SELECT * FROM Users WHERE Name LIKE 'A%'",
+		"ExpectedLinq": "db.Users.Where(x => EF.Functions.Like(x.Name, \"A%\")).ToList()"
+	},
+	{
+		"Id": 27,
+		"Desc": "% a feltétel elején.",
+		"SqlInput": "SELECT * FROM Users WHERE Name LIKE '%a'",
+		"ExpectedLinq": "db.Users.Where(x => EF.Functions.Like(x.Name, \"%a\")).ToList()"
+	},
+	{
+		"Id": 28,
+		"Desc": "% mindkét oldalon.",
+		"SqlInput": "SELECT * FROM Users WHERE Name LIKE '%a%'",
+		"ExpectedLinq": "db.Users.Where(x => EF.Functions.Like(x.Name, \"%a%\")).ToList()"
+	},
+	{
+		"Id": 29,
+		"Desc": "% középen.",
+		"SqlInput": "SELECT * FROM Users WHERE Name LIKE 'B%b'",
+		"ExpectedLinq": "db.Users.Where(x => EF.Functions.Like(x.Name, \"B%b\")).ToList()"
+	},
+	{
+		"Id": 30,
+		"Desc": "Több %.",
+		"SqlInput": "SELECT * FROM Users WHERE Name LIKE 'B%%%%%b'",
+		"ExpectedLinq": "db.Users.Where(x => EF.Functions.Like(x.Name, \"B%%%%%b\")).ToList()"
+	},
+	{
+		"Id": 31,
+		"Desc": "_ a szövegben.",
+		"SqlInput": "SELECT * FROM Users WHERE Name LIKE 'B_b'",
+		"ExpectedLinq": "db.Users.Where(x => EF.Functions.Like(x.Name, \"B_b\")).ToList()"
+	},
+	{
+		"Id": 32,
+		"Desc": "Több _.",
+		"SqlInput": "SELECT * FROM Users WHERE Name LIKE '___'",
+		"ExpectedLinq": "db.Users.Where(x => EF.Functions.Like(x.Name, \"___\")).ToList()"
+	},
+	{
+		"Id": 33,
+		"Desc": "Egyszerű Group By egy csillaggal.",
+		"SqlInput": "SELECT * FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => g.FirstOrDefault()).ToList()"
+	},
+	{
+		"Id": 34,
+		"Desc": "Group By kulcs lekérése explicit alias nélkül.",
+		"SqlInput": "SELECT Role FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => new { Role = g.Key }).ToList()"
+	},
+	{
+		"Id": 35,
+		"Desc": "Sima oszlop lekérése Group By után.",
+		"SqlInput": "SELECT Name FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => new { g.FirstOrDefault().Name }).ToList()"
+	},
+	{
+		"Id": 36,
+		"Desc": "Group By kulcs és nem-kulcs oszlop vegyesen.",
+		"SqlInput": "SELECT Role, Points FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => new { Role = g.Key, g.FirstOrDefault().Points }).ToList()"
+	},
+	{
+		"Id": 37,
+		"Desc": "Group By explicit AS aliasszal.",
+		"SqlInput": "SELECT Role AS Feladatkor FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => new { Feladatkor = g.Key }).ToList()"
+	},
+	{
+		"Id": 38,
+		"Desc": "Where és Group By kombinációja.",
+		"SqlInput": "SELECT Role FROM Users WHERE Age > 20 GROUP BY Role",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 20).GroupBy(x => x.Role).Select(g => new { Role = g.Key }).ToList()"
+	},
+	{
+		"Id": 39,
+		"Desc": "Egyszerű BETWEEN operátor számokra.",
+		"SqlInput": "SELECT * FROM Users WHERE Age BETWEEN 20 AND 30",
+		"ExpectedLinq": "db.Users.Where(x => x.Age >= 20 && x.Age <= 30).ToList()"
+	},
+	{
+		"Id": 40,
+		"Desc": "BETWEEN operátor matematikai kifejezéssel kombinálva.",
+		"SqlInput": "SELECT * FROM Users WHERE Points + Bonus BETWEEN 50 AND 150",
+		"ExpectedLinq": "db.Users.Where(x => x.Points + x.Bonus >= 50 && x.Points + x.Bonus <= 150).ToList()"
+	},
+	{
+		"Id": 41,
+		"Desc": "NOT operátor egyszerű reláció tagadására.",
+		"SqlInput": "SELECT * FROM Users WHERE NOT Age = 18",
+		"ExpectedLinq": "db.Users.Where(x => !(x.Age == 18)).ToList()"
+	},
+	{
+		"Id": 42,
+		"Desc": "NOT operátor összetett zárójeles kifejezésre.",
+		"SqlInput": "SELECT * FROM Users WHERE NOT (Age < 18 OR Points < 10)",
+		"ExpectedLinq": "db.Users.Where(x => !((x.Age < 18 || x.Points < 10))).ToList()"
+	},
+	{
+		"Id": 43,
+		"Desc": "NOT LIKE minta tagadása.",
+		"SqlInput": "SELECT * FROM Users WHERE Name NOT LIKE 'A%'",
+		"ExpectedLinq": "db.Users.Where(x => !(EF.Functions.Like(x.Name, \"A%\"))).ToList()"
+	},
+	{
+		"Id": 44,
+		"Desc": "Egyszerű csökkenő rendezés.",
+		"SqlInput": "SELECT * FROM Users ORDER BY Points DESC",
+		"ExpectedLinq": "db.Users.OrderByDescending(x => x.Points).ToList()"
+	},
+	{
+		"Id": 45,
+		"Desc": "Többszörös rendezés különböző irányokkal.",
+		"SqlInput": "SELECT * FROM Users ORDER BY Role ASC, Age DESC",
+		"ExpectedLinq": "db.Users.OrderBy(x => x.Role).ThenByDescending(x => x.Age).ToList()"
+	},
+	{
+		"Id": 46,
+		"Desc": "Group By kulccsal és aggregációval (AS alias).",
+		"SqlInput": "SELECT Role, COUNT(Id) AS Db FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => new { Role = g.Key, Db = g.Count() }).ToList()"
+	},
+	{
+		"Id": 47,
+		"Desc": "Group By COUNT(*) aggregációval.",
+		"SqlInput": "SELECT Role, COUNT(*) AS Total FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => new { Role = g.Key, Total = g.Count() }).ToList()"
+	},
+	{
+		"Id": 48,
+		"Desc": "Group By SUM aggregációval.",
+		"SqlInput": "SELECT Role, SUM(Points) AS OsszPont FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => new { Role = g.Key, OsszPont = g.Sum(x => x.Points) }).ToList()"
+	},
+	{
+		"Id": 49,
+		"Desc": "Group By MIN és MAX aggregációval egyszerre.",
+		"SqlInput": "SELECT Role, MIN(Age) AS MinKor, MAX(Age) AS MaxKor FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => new { Role = g.Key, MinKor = g.Min(x => x.Age), MaxKor = g.Max(x => x.Age) }).ToList()"
+	},
+	{
+		"Id": 50,
+		"Desc": "Egyszerű HAVING feltétel.",
+		"SqlInput": "SELECT Role FROM Users GROUP BY Role HAVING COUNT(*) > 2",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Where(g => g.Count() > 2).Select(g => new { Role = g.Key }).ToList()"
+	},
+	{
+		"Id": 51,
+		"Desc": "HAVING feltétel oszlopspecifikus aggregációval.",
+		"SqlInput": "SELECT Role FROM Users GROUP BY Role HAVING SUM(Points) >= 100",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Where(g => g.Sum(x => x.Points) >= 100).Select(g => new { Role = g.Key }).ToList()"
+	},
+	{
+		"Id": 52,
+		"Desc": "WHERE és GROUP BY és ORDER BY kombinációja.",
+		"SqlInput": "SELECT Role FROM Users WHERE Age > 18 GROUP BY Role ORDER BY Role DESC",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 18).GroupBy(x => x.Role).OrderByDescending(g => g.Key).Select(g => new { Role = g.Key }).ToList()"
+	},
+	{
+		"Id": 53,
+		"Desc": "Teljes lánc: WHERE, GROUP BY, HAVING, ORDER BY.",
+		"SqlInput": "SELECT Role FROM Users WHERE Age >= 18 GROUP BY Role HAVING COUNT(*) > 1 ORDER BY Role ASC",
+		"ExpectedLinq": "db.Users.Where(x => x.Age >= 18).GroupBy(x => x.Role).Where(g => g.Count() > 1).OrderBy(g => g.Key).Select(g => new { Role = g.Key }).ToList()"
+	},
+	{
+		"Id": 54,
+		"Desc": "HAVING több feltétellel (AND).",
+		"SqlInput": "SELECT Role FROM Users GROUP BY Role HAVING COUNT(*) > 1 AND SUM(Bonus) > 10",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Where(g => g.Count() > 1 && g.Sum(x => x.Bonus) > 10).Select(g => new { Role = g.Key }).ToList()"
+	},
+	{
+		"Id": 55,
+		"Desc": "ORDER BY kiválasztott alias alapján.",
+		"SqlInput": "SELECT Name AS Nev, Age AS Kor FROM Users ORDER BY Kor DESC",
+		"ExpectedLinq": "db.Users.OrderByDescending(x => x.Age).Select(x => new { Nev = x.Name, Kor = x.Age }).ToList()"
+	},
+	{
+		"Id": 56,
+		"Desc": "NOT BETWEEN tagadás.",
+		"SqlInput": "SELECT * FROM Users WHERE Age NOT BETWEEN 20 AND 30",
+		"ExpectedLinq": "db.Users.Where(x => !(x.Age >= 20 && x.Age <= 30)).ToList()"
+	},
+	{
+		"Id": 57,
+		"Desc": "Lekérdezés csak limit-tel.",
+		"SqlInput": "SELECT * FROM Users LIMIT 5",
+		"ExpectedLinq": "db.Users.Take(5).ToList()"
+	},
+	{
+		"Id": 58,
+		"Desc": "Lekérdezés limit és offset párossal.",
+		"SqlInput": "SELECT * FROM Users LIMIT 10 OFFSET 20",
+		"ExpectedLinq": "db.Users.Skip(20).Take(10).ToList()"
+	},
+	{
+		"Id": 59,
+		"Desc": "Összetett lekérdezés rendezéssel és lapozással.",
+		"SqlInput": "SELECT Name FROM Users ORDER BY Age DESC LIMIT 10 OFFSET 5",
+		"ExpectedLinq": "db.Users.OrderByDescending(x => x.Age).Select(x => new { x.Name }).Skip(5).Take(10).ToList()"
+	},
+	{
+		"Id": 60,
+		"Desc": "Egyszerű SELECT alias használattal.",
+		"SqlInput": "SELECT Name AS UserName FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { UserName = x.Name }).ToList()"
+	},
+	{
+		"Id": 61,
+		"Desc": "Több alias egy lekérdezésben.",
+		"SqlInput": "SELECT Name AS UserName, Age AS UserAge FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { UserName = x.Name, UserAge = x.Age }).ToList()"
+	},
+	{
+		"Id": 62,
+		"Desc": "COUNT aggregáció GROUP BY nélkül.",
+		"SqlInput": "SELECT COUNT(Id) FROM Users",
+		"ExpectedLinq": "db.Users.Count()"
+	},
+	{
+		"Id": 63,
+		"Desc": "COUNT csillaggal GROUP BY nélkül.",
+		"SqlInput": "SELECT COUNT(*) FROM Users",
+		"ExpectedLinq": "db.Users.Count()"
+	},
+	{
+		"Id": 64,
+		"Desc": "SUM aggregáció GROUP BY nélkül.",
+		"SqlInput": "SELECT SUM(Points) FROM Users",
+		"ExpectedLinq": "db.Users.Sum(x => x.Points)"
+	},
+	{
+		"Id": 65,
+		"Desc": "MIN aggregáció GROUP BY nélkül.",
+		"SqlInput": "SELECT MIN(Age) FROM Users",
+		"ExpectedLinq": "db.Users.Min(x => x.Age)"
+	},
+	{
+		"Id": 66,
+		"Desc": "MAX aggregáció GROUP BY nélkül.",
+		"SqlInput": "SELECT MAX(Age) FROM Users",
+		"ExpectedLinq": "db.Users.Max(x => x.Age)"
+	},
+	{
+		"Id": 67,
+		"Desc": "AVG aggregáció GROUP BY nélkül.",
+		"SqlInput": "SELECT AVG(Age) FROM Users",
+		"ExpectedLinq": "db.Users.Average(x => x.Age)"
+	},
+	{
+		"Id": 68,
+		"Desc": "Kivonás matematikai kifejezésben.",
+		"SqlInput": "SELECT * FROM Users WHERE Age - 5 > 10",
+		"ExpectedLinq": "db.Users.Where(x => x.Age - 5 > 10).ToList()"
+	},
+	{
+		"Id": 69,
+		"Desc": "Szorzás matematikai kifejezésben.",
+		"SqlInput": "SELECT * FROM Users WHERE Age * 2 > 50",
+		"ExpectedLinq": "db.Users.Where(x => x.Age * 2 > 50).ToList()"
+	},
+	{
+		"Id": 70,
+		"Desc": "Osztás matematikai kifejezésben.",
+		"SqlInput": "SELECT * FROM Users WHERE Points / 2 > 10",
+		"ExpectedLinq": "db.Users.Where(x => x.Points / 2 > 10).ToList()"
+	},
+	{
+		"Id": 71,
+		"Desc": "NOT összetett kifejezés előtt.",
+		"SqlInput": "SELECT * FROM Users WHERE NOT (Age > 18 AND Role = 'Admin')",
+		"ExpectedLinq": "db.Users.Where(x => !((x.Age > 18 && x.Role == \"Admin\"))).ToList()"
+	},
+	{
+		"Id": 72,
+		"Desc": "NOT LIKE több feltétellel.",
+		"SqlInput": "SELECT * FROM Users WHERE Name NOT LIKE 'A%' AND Age > 20",
+		"ExpectedLinq": "db.Users.Where(x => !(EF.Functions.Like(x.Name, \"A%\")) && x.Age > 20).ToList()"
+	},
+	{
+		"Id": 73,
+		"Desc": "NOT BETWEEN matematikai kifejezéssel.",
+		"SqlInput": "SELECT * FROM Users WHERE Points + Bonus NOT BETWEEN 50 AND 100",
+		"ExpectedLinq": "db.Users.Where(x => !(x.Points + x.Bonus >= 50 && x.Points + x.Bonus <= 100)).ToList()"
+	},
+	{
+		"Id": 74,
+		"Desc": "WHERE és LIMIT kombináció.",
+		"SqlInput": "SELECT * FROM Users WHERE Age > 18 LIMIT 5",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 18).Take(5).ToList()"
+	},
+	{
+		"Id": 75,
+		"Desc": "Több GROUP BY kulcs.",
+		"SqlInput": "SELECT Role, Age FROM Users GROUP BY Role, Age",
+		"ExpectedLinq": "db.Users.GroupBy(x => new { x.Role, x.Age }).Select(g => new { Role = g.Key.Role, Age = g.Key.Age }).ToList()"
+	},
+	{
+		"Id": 76,
+		"Desc": "ORDER BY alias alapján.",
+		"SqlInput": "SELECT Name AS UserName FROM Users ORDER BY UserName",
+		"ExpectedLinq": "db.Users.OrderBy(x => x.Name).Select(x => new { UserName = x.Name }).ToList()"
+	},
+	{
+		"Id": 77,
+		"Desc": "Teljes SELECT lánc WHERE ORDER BY LIMIT OFFSET.",
+		"SqlInput": "SELECT Name FROM Users WHERE Age >= 18 ORDER BY Name DESC LIMIT 10 OFFSET 5",
+		"ExpectedLinq": "db.Users.Where(x => x.Age >= 18).OrderByDescending(x => x.Name).Select(x => new { x.Name }).Skip(5).Take(10).ToList()"
+	},
+	{
+		"Id": 78,
+		"Desc": "NULL.",
+		"SqlInput": "SELECT * FROM Users WHERE Role IS NULL",
+		"ExpectedLinq": "db.Users.Where(x => x.Role == null).ToList()"
+	},
+	{
+		"Id": 79,
+		"Desc": "NOT NULL",
+		"SqlInput": "SELECT * FROM Users WHERE Role IS NOT NULL",
+		"ExpectedLinq": "db.Users.Where(x => x.Role != null).ToList()"
+	},
+	{
+		"Id": 80,
+		"Desc": "IN használata.",
+		"SqlInput": "SELECT * FROM Users WHERE Role IN ('Admin', 'Member')",
+		"ExpectedLinq": "db.Users.Where(x => new string[] { \"Admin\", \"Member\" }.Contains(x.Role)).ToList()"
+	},
+	{
+		"Id": 81,
+		"Desc": "NOT IN használata.",
+		"SqlInput": "SELECT * FROM Users WHERE Role NOT IN ('Guest')",
+		"ExpectedLinq": "db.Users.Where(x => !(new string[] { \"Guest\" }.Contains(x.Role))).ToList()"
+	},
+	{
+		"Id": 82,
+		"Desc": "DISTINCT egyetlen oszlopon.",
+		"SqlInput": "SELECT DISTINCT Role FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Role }).Distinct().ToList()"
+	},
+	{
+		"Id": 83,
+		"Desc": "DISTINCT több oszlopon.",
+		"SqlInput": "SELECT DISTINCT Role, Age FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Role, x.Age }).Distinct().ToList()"
+	},
+	{
+		"Id": 84,
+		"Desc": "DISTINCT csillaggal.",
+		"SqlInput": "SELECT DISTINCT * FROM Users",
+		"ExpectedLinq": "db.Users.Distinct().ToList()"
+	},
+	{
+		"Id": 85,
+		"Desc": "DISTINCT WHERE szűréssel.",
+		"SqlInput": "SELECT DISTINCT Role FROM Users WHERE Age > 18",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 18).Select(x => new { x.Role }).Distinct().ToList()"
+	},
+	{
+		"Id": 86,
+		"Desc": "DISTINCT ORDER BY-jal kombinálva.",
+		"SqlInput": "SELECT DISTINCT Role FROM Users ORDER BY Role ASC",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Role }).Distinct().OrderBy(x => x.Role).ToList()"
+	},
+	{
+		"Id": 87,
+		"Desc": "CASE WHEN keresett forma egyetlen ággal és ELSE-szel.",
+		"SqlInput": "SELECT CASE WHEN Age >= 18 THEN 'Felnott' ELSE 'Fiatal' END AS Kategoria FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Kategoria = (x.Age >= 18 ? \"Felnott\" : \"Fiatal\") }).ToList()"
+	},
+	{
+		"Id": 88,
+		"Desc": "CASE WHEN keresett forma több ággal.",
+		"SqlInput": "SELECT CASE WHEN Age < 18 THEN 'Junior' WHEN Age < 65 THEN 'Felnott' ELSE 'Senior' END AS Kategoria FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Kategoria = (x.Age < 18 ? \"Junior\" : x.Age < 65 ? \"Felnott\" : \"Senior\") }).ToList()"
+	},
+	{
+		"Id": 89,
+		"Desc": "CASE WHEN egyszerű forma (simple CASE).",
+		"SqlInput": "SELECT CASE Role WHEN 'Admin' THEN 1 WHEN 'Member' THEN 2 ELSE 0 END AS Szint FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Szint = (x.Role == \"Admin\" ? 1 : x.Role == \"Member\" ? 2 : 0) }).ToList()"
+	},
+	{
+		"Id": 90,
+		"Desc": "CASE WHEN ELSE nélkül (null fallback).",
+		"SqlInput": "SELECT CASE WHEN Age >= 18 THEN 'Felnott' END AS Kategoria FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Kategoria = (x.Age >= 18 ? \"Felnott\" : null) }).ToList()"
+	},
+	{
+		"Id": 91,
+		"Desc": "CASE WHEN WHERE feltételben.",
+		"SqlInput": "SELECT * FROM Users WHERE CASE WHEN Age >= 18 THEN 1 ELSE 0 END = 1",
+		"ExpectedLinq": "db.Users.Where(x => (x.Age >= 18 ? 1 : 0) == 1).ToList()"
+	},
+	{
+		"Id": 92,
+		"Desc": "CASE WHEN AND feltétellel a WHEN-ben.",
+		"SqlInput": "SELECT CASE WHEN Age >= 18 AND Role = 'Admin' THEN 'Admin felnott' ELSE 'Egyeb' END AS Cimke FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Cimke = (x.Age >= 18 && x.Role == \"Admin\" ? \"Admin felnott\" : \"Egyeb\") }).ToList()"
+	},
+	{
+		"Id": 93,
+		"Desc": "CASE WHEN ORDER BY-ban.",
+		"SqlInput": "SELECT Name FROM Users ORDER BY CASE WHEN Role = 'Admin' THEN 0 ELSE 1 END",
+		"ExpectedLinq": "db.Users.OrderBy(x => (x.Role == \"Admin\" ? 0 : 1)).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 94,
+		"Desc": "UPPER függvény WHERE-ben.",
+		"SqlInput": "SELECT * FROM Users WHERE UPPER(Name) = 'ALICE'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name.ToUpper() == \"ALICE\").ToList()"
+	},
+	{
+		"Id": 95,
+		"Desc": "LOWER függvény WHERE-ben.",
+		"SqlInput": "SELECT * FROM Users WHERE LOWER(Name) = 'alice'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name.ToLower() == \"alice\").ToList()"
+	},
+	{
+		"Id": 96,
+		"Desc": "UPPER függvény SELECT-ben aliassal.",
+		"SqlInput": "SELECT UPPER(Name) AS UpperName FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { UpperName = x.Name.ToUpper() }).ToList()"
+	},
+	{
+		"Id": 97,
+		"Desc": "LOWER függvény SELECT-ben aliassal.",
+		"SqlInput": "SELECT LOWER(Role) AS LowerRole FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { LowerRole = x.Role.ToLower() }).ToList()"
+	},
+	{
+		"Id": 98,
+		"Desc": "TRIM függvény WHERE-ben.",
+		"SqlInput": "SELECT * FROM Users WHERE TRIM(Name) = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name.Trim() == \"Bob\").ToList()"
+	},
+	{
+		"Id": 99,
+		"Desc": "LENGTH függvény WHERE-ben.",
+		"SqlInput": "SELECT * FROM Users WHERE LENGTH(Name) > 3",
+		"ExpectedLinq": "db.Users.Where(x => x.Name.Length > 3).ToList()"
+	},
+	{
+		"Id": 100,
+		"Desc": "LENGTH függvény SELECT-ben.",
+		"SqlInput": "SELECT Name, LENGTH(Name) AS NameLength FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, NameLength = x.Name.Length }).ToList()"
+	},
+	{
+		"Id": 101,
+		"Desc": "SUBSTRING függvény SELECT-ben.",
+		"SqlInput": "SELECT SUBSTRING(Name, 1, 3) AS Short FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Short = x.Name.Substring(1 - 1, 3) }).ToList()"
+	},
+	{
+		"Id": 102,
+		"Desc": "COALESCE NULL helyettesítés.",
+		"SqlInput": "SELECT COALESCE(Role, 'Ismeretlen') AS SafeRole FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { SafeRole = (x.Role ?? \"Ismeretlen\") }).ToList()"
+	},
+	{
+		"Id": 103,
+		"Desc": "NULLIF egyenlő értékek esetén null-t ad.",
+		"SqlInput": "SELECT NULLIF(Role, 'Guest') AS FilteredRole FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { FilteredRole = (x.Role == \"Guest\" ? null : x.Role) }).ToList()"
+	},
+	{
+		"Id": 104,
+		"Desc": "UPPER WHERE-ben LIKE-kal kombinálva.",
+		"SqlInput": "SELECT * FROM Users WHERE UPPER(Name) LIKE 'A%'",
+		"ExpectedLinq": "db.Users.Where(x => EF.Functions.Like(x.Name.ToUpper(), \"A%\")).ToList()"
+	},
+	{
+		"Id": 105,
+		"Desc": "LENGTH WHERE-ben és rendezés.",
+		"SqlInput": "SELECT Name FROM Users WHERE LENGTH(Name) >= 3 ORDER BY LENGTH(Name) DESC",
+		"ExpectedLinq": "db.Users.Where(x => x.Name.Length >= 3).OrderByDescending(x => x.Name.Length).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 106,
+		"Desc": "INNER JOIN alapeset, explicit alias-okkal.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u JOIN Orders o ON u.id = o.owner",
+		"ExpectedLinq": "db.Users.Join(db.Orders, u => u.Id, o => o.Owner, (u, o) => new { u, o }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 107,
+		"Desc": "INNER JOIN explicit INNER kulcsszóval.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u INNER JOIN Orders o ON u.id = o.owner",
+		"ExpectedLinq": "db.Users.Join(db.Orders, u => u.Id, o => o.Owner, (u, o) => new { u, o }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 108,
+		"Desc": "INNER JOIN a join feltétel fordított sorrendjével.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u JOIN Orders o ON o.owner = u.id",
+		"ExpectedLinq": "db.Users.Join(db.Orders, u => u.Id, o => o.Owner, (u, o) => new { u, o }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 109,
+		"Desc": "CROSS JOIN.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u CROSS JOIN Orders o ON 1 = 1",
+		"ExpectedLinq": "db.Users.SelectMany(u => db.Orders, (u, o) => new { u, o }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 110,
+		"Desc": "Két láncolt INNER JOIN, három táblán keresztül.",
+		"SqlInput": "SELECT u.name, o.item, p.title FROM Users u JOIN Orders o ON u.id = o.owner JOIN Products p ON o.id = p.parent",
+		"ExpectedLinq": "db.Users.Join(db.Orders, u => u.Id, o => o.Owner, (u, o) => new { u, o }).Join(db.Products, j1 => j1.o.Id, p => p.Parent, (j1, p) => new { j1.u, j1.o, p }).Select(x => new { x.u.Name, x.o.Item, x.p.Title }).ToList()"
+	},
+	{
+		"Id": 111,
+		"Desc": "Négy láncolt INNER JOIN, öt táblán keresztül.",
+		"SqlInput": "SELECT u.name, o.item, p.title, c.label, w.location FROM Users u JOIN Orders o ON u.id = o.owner JOIN Products p ON o.id = p.parent JOIN Categories c ON p.id = c.parent JOIN Warehouses w ON c.id = w.parent",
+		"ExpectedLinq": "db.Users.Join(db.Orders, u => u.Id, o => o.Owner, (u, o) => new { u, o }).Join(db.Products, j1 => j1.o.Id, p => p.Parent, (j1, p) => new { j1.u, j1.o, p }).Join(db.Categories, j2 => j2.p.Id, c => c.Parent, (j2, c) => new { j2.u, j2.o, j2.p, c }).Join(db.Warehouses, j3 => j3.c.Id, w => w.Parent, (j3, w) => new { j3.u, j3.o, j3.p, j3.c, w }).Select(x => new { x.u.Name, x.o.Item, x.p.Title, x.c.Label, x.w.Location }).ToList()"
+	},
+	{
+		"Id": 112,
+		"Desc": "LEFT JOIN alapeset.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u LEFT JOIN Orders o ON u.id = o.owner",
+		"ExpectedLinq": "db.Users.GroupJoin(db.Orders, u => u.Id, o => o.Owner, (u, _o) => new { u, _o }).SelectMany(gj => gj._o.DefaultIfEmpty(), (gj, o) => new { gj.u, o }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 113,
+		"Desc": "LEFT OUTER JOIN explicit OUTER kulcsszóval.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u LEFT OUTER JOIN Orders o ON u.id = o.owner",
+		"ExpectedLinq": "db.Users.GroupJoin(db.Orders, u => u.Id, o => o.Owner, (u, _o) => new { u, _o }).SelectMany(gj => gj._o.DefaultIfEmpty(), (gj, o) => new { gj.u, o }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 114,
+		"Desc": "RIGHT JOIN alapeset.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u RIGHT JOIN Orders o ON u.id = o.owner",
+		"ExpectedLinq": "db.Orders.GroupJoin(db.Users, o => o.Owner, u => u.Id, (o, _u) => new { o, _u }).SelectMany(gj => gj._u.DefaultIfEmpty(), (gj, u) => new { gj.o, u }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 115,
+		"Desc": "INNER JOIN WHERE feltétellel.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u JOIN Orders o ON u.id = o.owner WHERE u.age > 20",
+		"ExpectedLinq": "db.Users.Join(db.Orders, u => u.Id, o => o.Owner, (u, o) => new { u, o }).Where(x => x.u.Age > 20).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 116,
+		"Desc": "INNER JOIN ORDER BY-jal.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u JOIN Orders o ON u.id = o.owner ORDER BY u.name ASC",
+		"ExpectedLinq": "db.Users.Join(db.Orders, u => u.Id, o => o.Owner, (u, o) => new { u, o }).OrderBy(x => x.u.Name).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 117,
+		"Desc": "INNER JOIN WHERE és LIMIT kombinációval.",
+		"SqlInput": "SELECT u.name, o.qty FROM Users u JOIN Orders o ON u.id = o.owner WHERE o.qty > 1 LIMIT 3",
+		"ExpectedLinq": "db.Users.Join(db.Orders, u => u.Id, o => o.Owner, (u, o) => new { u, o }).Where(x => x.o.Qty > 1).Select(x => new { x.u.Name, x.o.Qty }).Take(3).ToList()"
+	},
+	{
+		"Id": 118,
+		"Desc": "LEFT JOIN WHERE feltétellel a bal táblán.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u LEFT JOIN Orders o ON u.id = o.owner WHERE u.age >= 25",
+		"ExpectedLinq": "db.Users.GroupJoin(db.Orders, u => u.Id, o => o.Owner, (u, _o) => new { u, _o }).SelectMany(gj => gj._o.DefaultIfEmpty(), (gj, o) => new { gj.u, o }).Where(x => x.u.Age >= 25).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 119,
+		"Desc": "LEFT JOIN ORDER BY DESC és LIMIT.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u LEFT JOIN Orders o ON u.id = o.owner ORDER BY u.name DESC LIMIT 4",
+		"ExpectedLinq": "db.Users.GroupJoin(db.Orders, u => u.Id, o => o.Owner, (u, _o) => new { u, _o }).SelectMany(gj => gj._o.DefaultIfEmpty(), (gj, o) => new { gj.u, o }).OrderByDescending(x => x.u.Name).Select(x => new { x.u.Name, x.o.Item }).Take(4).ToList()"
+	},
+	{
+		"Id": 120,
+		"Desc": "RIGHT JOIN fordított ON feltétel sorrenddel.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u RIGHT JOIN Orders o ON o.owner = u.id",
+		"ExpectedLinq": "db.Orders.GroupJoin(db.Users, o => o.Owner, u => u.Id, (o, _u) => new { o, _u }).SelectMany(gj => gj._u.DefaultIfEmpty(), (gj, u) => new { gj.o, u }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 121,
+		"Desc": "RIGHT JOIN WHERE feltétellel.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u RIGHT JOIN Orders o ON u.id = o.owner WHERE o.qty > 1",
+		"ExpectedLinq": "db.Orders.GroupJoin(db.Users, o => o.Owner, u => u.Id, (o, _u) => new { o, _u }).SelectMany(gj => gj._u.DefaultIfEmpty(), (gj, u) => new { gj.o, u }).Where(x => x.o.Qty > 1).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 122,
+		"Desc": "INNER JOIN majd LEFT JOIN láncolva.",
+		"SqlInput": "SELECT u.name, o.item, p.title FROM Users u JOIN Orders o ON u.id = o.owner LEFT JOIN Products p ON o.id = p.parent",
+		"ExpectedLinq": "db.Users.Join(db.Orders, u => u.Id, o => o.Owner, (u, o) => new { u, o }).GroupJoin(db.Products, j1 => j1.o.Id, p => p.Parent, (j1, _p) => new { j1, _p }).SelectMany(gj => gj._p.DefaultIfEmpty(), (gj, p) => new { gj.j1.u, gj.j1.o, p }).Select(x => new { x.u.Name, x.o.Item, x.p.Title }).ToList()"
+	},
+	{
+		"Id": 123,
+		"Desc": "LEFT JOIN fordított ON feltétel sorrenddel.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u LEFT JOIN Orders o ON o.owner = u.id",
+		"ExpectedLinq": "db.Users.GroupJoin(db.Orders, u => u.Id, o => o.Owner, (u, _o) => new { u, _o }).SelectMany(gj => gj._o.DefaultIfEmpty(), (gj, o) => new { gj.u, o }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 124,
+		"Desc": "LEFT JOIN WHERE a jobb táblán szűr, null sorok kiesnek.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u LEFT JOIN Orders o ON u.id = o.owner WHERE o.item = 'Laptop'",
+		"ExpectedLinq": "db.Users.GroupJoin(db.Orders, u => u.Id, o => o.Owner, (u, _o) => new { u, _o }).SelectMany(gj => gj._o.DefaultIfEmpty(), (gj, o) => new { gj.u, o }).Where(x => x.o.Item == \"Laptop\").Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 125,
+		"Desc": "RIGHT JOIN ORDER BY a jobb táblán.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u RIGHT JOIN Orders o ON u.id = o.owner ORDER BY o.item ASC",
+		"ExpectedLinq": "db.Orders.GroupJoin(db.Users, o => o.Owner, u => u.Id, (o, _u) => new { o, _u }).SelectMany(gj => gj._u.DefaultIfEmpty(), (gj, u) => new { gj.o, u }).OrderBy(x => x.o.Item).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 126,
+		"Desc": "RIGHT OUTER JOIN explicit OUTER kulcsszóval.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u RIGHT OUTER JOIN Orders o ON u.id = o.owner",
+		"ExpectedLinq": "db.Orders.GroupJoin(db.Users, o => o.Owner, u => u.Id, (o, _u) => new { o, _u }).SelectMany(gj => gj._u.DefaultIfEmpty(), (gj, u) => new { gj.o, u }).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 127,
+		"Desc": "Self JOIN alapeset, explicit aliasokkal.",
+		"SqlInput": "SELECT a.name, b.name AS bname FROM Users a JOIN Users b ON a.id = b.id",
+		"ExpectedLinq": "db.Users.Join(db.Users, a => a.Id, b => b.Id, (a, b) => new { a, b }).Select(x => new { x.a.Name, bname = x.b.Name }).ToList()"
+	},
+	{
+		"Id": 128,
+		"Desc": "Self JOIN WHERE feltétellel.",
+		"SqlInput": "SELECT a.name, b.role FROM Users a JOIN Users b ON a.id = b.id WHERE a.age > 20",
+		"ExpectedLinq": "db.Users.Join(db.Users, a => a.Id, b => b.Id, (a, b) => new { a, b }).Where(x => x.a.Age > 20).Select(x => new { x.a.Name, x.b.Role }).ToList()"
+	},
+	{
+		"Id": 129,
+		"Desc": "Self JOIN ORDER BY-jal.",
+		"SqlInput": "SELECT a.name, b.role FROM Users a JOIN Users b ON a.id = b.id ORDER BY a.name ASC",
+		"ExpectedLinq": "db.Users.Join(db.Users, a => a.Id, b => b.Id, (a, b) => new { a, b }).OrderBy(x => x.a.Name).Select(x => new { x.a.Name, x.b.Role }).ToList()"
+	},
+	{
+		"Id": 130,
+		"Desc": "Non-equi JOIN alapeset, greater-than feltétellel.",
+		"SqlInput": "SELECT a.name, b.name AS bname FROM Users a JOIN Users b ON a.points > b.points",
+		"ExpectedLinq": "db.Users.SelectMany(a => db.Users, (a, b) => new { a, b }).Where(x => x.a.Points > x.b.Points).Select(x => new { x.a.Name, bname = x.b.Name }).ToList()"
+	},
+	{
+		"Id": 131,
+		"Desc": "Non-equi JOIN less-than feltétellel.",
+		"SqlInput": "SELECT a.name, b.name AS bname FROM Users a JOIN Users b ON a.age < b.age",
+		"ExpectedLinq": "db.Users.SelectMany(a => db.Users, (a, b) => new { a, b }).Where(x => x.a.Age < x.b.Age).Select(x => new { x.a.Name, bname = x.b.Name }).ToList()"
+	},
+	{
+		"Id": 132,
+		"Desc": "Non-equi JOIN két különböző táblán.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u JOIN Orders o ON u.points > o.qty",
+		"ExpectedLinq": "db.Users.SelectMany(u => db.Orders, (u, o) => new { u, o }).Where(x => x.u.Points > x.o.Qty).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 133,
+		"Desc": "Non-equi JOIN WHERE feltétellel kombinálva.",
+		"SqlInput": "SELECT u.name, o.item FROM Users u JOIN Orders o ON u.points >= o.qty WHERE u.age > 20",
+		"ExpectedLinq": "db.Users.SelectMany(u => db.Orders, (u, o) => new { u, o }).Where(x => x.u.Points >= x.o.Qty).Where(x => x.u.Age > 20).Select(x => new { x.u.Name, x.o.Item }).ToList()"
+	},
+	{
+		"Id": 134,
+		"Desc": "ABS függvény WHERE-ben.",
+		"SqlInput": "SELECT Name, Points FROM Users WHERE ABS(Points) > 50",
+		"ExpectedLinq": "db.Users.Where(x => Math.Abs((int)(x.Points)) > 50).Select(x => new { x.Name, x.Points }).ToList()"
+	},
+	{
+		"Id": 135,
+		"Desc": "FLOOR függvény SELECT-ben.",
+		"SqlInput": "SELECT Name, FLOOR(Points) AS FloorPoints FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, FloorPoints = Math.Floor((double)(x.Points)) }).ToList()"
+	},
+	{
+		"Id": 136,
+		"Desc": "CEIL függvény SELECT-ben.",
+		"SqlInput": "SELECT Name, CEIL(Points) AS CeilPoints FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, CeilPoints = Math.Ceiling((double)(x.Points)) }).ToList()"
+	},
+	{
+		"Id": 137,
+		"Desc": "ROUND egy argumentummal.",
+		"SqlInput": "SELECT Name, ROUND(Points) AS RoundedPoints FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, RoundedPoints = Math.Round((double)(x.Points)) }).ToList()"
+	},
+	{
+		"Id": 138,
+		"Desc": "SQRT függvény SELECT-ben.",
+		"SqlInput": "SELECT Name, SQRT(Points) AS SqrtPoints FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, SqrtPoints = Math.Sqrt((double)(x.Points)) }).ToList()"
+	},
+	{
+		"Id": 139,
+		"Desc": "ABS és FLOOR kombinálva WHERE-ben és SELECT-ben.",
+		"SqlInput": "SELECT Name, ABS(Bonus) AS AbsBonus, FLOOR(Points) AS FloorPts FROM Users WHERE ABS(Bonus) > 5",
+		"ExpectedLinq": "db.Users.Where(x => Math.Abs((int)(x.Bonus)) > 5).Select(x => new { x.Name, AbsBonus = Math.Abs((int)(x.Bonus)), FloorPts = Math.Floor((double)(x.Points)) }).ToList()"
+	},
+	{
+		"Id": 140,
+		"Desc": "HAVING két aggregátum összehasonlítása.",
+		"SqlInput": "SELECT Role FROM Users GROUP BY Role HAVING MAX(Age) > MIN(Age)",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Where(g => g.Max(x => x.Age) > g.Min(x => x.Age)).Select(g => new { Role = g.Key }).ToList()"
+	},
+	{
+		"Id": 141,
+		"Desc": "|| operátorral string összefűzés.",
+		"SqlInput": "SELECT Name || Role AS FullLabel FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { FullLabel = string.Concat(x.Name, x.Role) }).ToList()"
+	},
+	{
+		"Id": 142,
+		"Desc": "CONCAT WHERE-ben.",
+		"SqlInput": "SELECT Name FROM Users WHERE Name || Role = 'BobAdmin'",
+		"ExpectedLinq": "db.Users.Where(x => string.Concat(x.Name, x.Role) == \"BobAdmin\").Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 143,
+		"Desc": "UNION két SELECT között.",
+		"SqlInput": "SELECT Name FROM Users WHERE Age > 25 UNION SELECT Name FROM Users WHERE Role = 'Admin'",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 25).Select(x => new { x.Name }).ToList().Union(db.Users.Where(x => x.Role == \"Admin\").Select(x => new { x.Name }).ToList())"
+	},
+	{
+		"Id": 144,
+		"Desc": "UNION ALL két SELECT között.",
+		"SqlInput": "SELECT Name FROM Users WHERE Age > 25 UNION ALL SELECT Name FROM Users WHERE Role = 'Admin'",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 25).Select(x => new { x.Name }).ToList().Concat(db.Users.Where(x => x.Role == \"Admin\").Select(x => new { x.Name }).ToList())"
+	},
+	{
+		"Id": 145,
+		"Desc": "UNION három SELECT-tel láncolva.",
+		"SqlInput": "SELECT Name FROM Users WHERE Age > 30 UNION SELECT Name FROM Users WHERE Role = 'Admin' UNION SELECT Name FROM Users WHERE Points > 100",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 30).Select(x => new { x.Name }).ToList().Union(db.Users.Where(x => x.Role == \"Admin\").Select(x => new { x.Name }).ToList()).Union(db.Users.Where(x => x.Points > 100).Select(x => new { x.Name }).ToList())"
+	},
+	{
+		"Id": 146,
+		"Desc": "UNION ALL több oszloppal.",
+		"SqlInput": "SELECT Name, Age FROM Users WHERE Role = 'Admin' UNION ALL SELECT Name, Age FROM Users WHERE Points > 100",
+		"ExpectedLinq": "db.Users.Where(x => x.Role == \"Admin\").Select(x => new { x.Name, x.Age }).ToList().Concat(db.Users.Where(x => x.Points > 100).Select(x => new { x.Name, x.Age }).ToList())"
+	},
+	{
+		"Id": 147,
+		"Desc": "|| három operandussal láncolva.",
+		"SqlInput": "SELECT Name || ' ' || Role AS FullLabel FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { FullLabel = string.Concat(string.Concat(x.Name, \" \"), x.Role) }).ToList()"
+	},
+	{
+		"Id": 148,
+		"Desc": "POWER függvény.",
+		"SqlInput": "SELECT Name, POWER(Points, 2) AS Squared FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, Squared = Math.Pow((double)(x.Points), (double)(2)) }).ToList()"
+	},
+	{
+		"Id": 149,
+		"Desc": "SIGN függvény.",
+		"SqlInput": "SELECT Name, SIGN(Bonus) AS BonusSign FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, BonusSign = Math.Sign((int)(x.Bonus)) }).ToList()"
+	},
+	{
+		"Id": 150,
+		"Desc": "GROUP BY HAVING AVG BETWEEN.",
+		"SqlInput": "SELECT Role, AVG(Age) AS AvgAge FROM Users GROUP BY Role HAVING AVG(Age) BETWEEN 20 AND 40",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Where(g => g.Average(x => x.Age) >= 20 && g.Average(x => x.Age) <= 40).Select(g => new { Role = g.Key, AvgAge = g.Average(x => x.Age) }).ToList()"
+	},
+	{
+		"Id": 151,
+		"Desc": "GROUP BY több kulccsal és SUM.",
+		"SqlInput": "SELECT Role, Age, SUM(Points) AS TotalPoints FROM Users GROUP BY Role, Age",
+		"ExpectedLinq": "db.Users.GroupBy(x => new { x.Role, x.Age }).Select(g => new { Role = g.Key.Role, Age = g.Key.Age, TotalPoints = g.Sum(x => x.Points) }).ToList()"
+	},
+	{
+		"Id": 152,
+		"Desc": "CASE WHEN WHERE feltételben.",
+		"SqlInput": "SELECT Name FROM Users WHERE CASE WHEN Age > 30 THEN 1 ELSE 0 END = 1",
+		"ExpectedLinq": "db.Users.Where(x => (x.Age > 30 ? 1 : 0) == 1).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 153,
+		"Desc": "Beágyazott CASE WHEN.",
+		"SqlInput": "SELECT Name, CASE WHEN Age > 40 THEN 'Senior' WHEN Age > 25 THEN 'Mid' ELSE 'Junior' END AS Level FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, Level = (x.Age > 40 ? \"Senior\" : x.Age > 25 ? \"Mid\" : \"Junior\") }).ToList()"
+	},
+	{
+		"Id": 154,
+		"Desc": "SELECT DISTINCT több oszloppal és WHERE.",
+		"SqlInput": "SELECT DISTINCT Role, Age FROM Users WHERE Points > 50",
+		"ExpectedLinq": "db.Users.Where(x => x.Points > 50).Select(x => new { x.Role, x.Age }).Distinct().ToList()"
+	},
+	{
+		"Id": 155,
+		"Desc": "UPPER és LOWER kombinálva.",
+		"SqlInput": "SELECT UPPER(Name) AS UpperName, LOWER(Role) AS LowerRole FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { UpperName = x.Name.ToUpper(), LowerRole = x.Role.ToLower() }).ToList()"
+	},
+	{
+		"Id": 156,
+		"Desc": "TRIM és LENGTH kombinálva WHERE-ben.",
+		"SqlInput": "SELECT Name FROM Users WHERE LENGTH(TRIM(Name)) > 3",
+		"ExpectedLinq": "db.Users.Where(x => x.Name.Trim().Length > 3).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 157,
+		"Desc": "INTERSECT két SELECT között.",
+		"SqlInput": "SELECT Name FROM Users WHERE Age > 25 INTERSECT SELECT Name FROM Users WHERE Role = 'Admin'",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 25).Select(x => new { x.Name }).ToList().Intersect(db.Users.Where(x => x.Role == \"Admin\").Select(x => new { x.Name }).ToList())"
+	},
+	{
+		"Id": 158,
+		"Desc": "EXCEPT két SELECT között.",
+		"SqlInput": "SELECT Name FROM Users WHERE Age > 18 EXCEPT SELECT Name FROM Users WHERE Role = 'Admin'",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 18).Select(x => new { x.Name }).ToList().Except(db.Users.Where(x => x.Role == \"Admin\").Select(x => new { x.Name }).ToList())"
+	},
+	{
+		"Id": 159,
+		"Desc": "IN (szubkérdezés) – alap eset.",
+		"SqlInput": "SELECT Name FROM Users WHERE Id IN (SELECT Owner FROM Orders)",
+		"ExpectedLinq": "db.Users.Where(x => (db.Orders).Any(o => o.Owner == x.Id)).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 160,
+		"Desc": "NOT IN (szubkérdezés).",
+		"SqlInput": "SELECT Name FROM Users WHERE Id NOT IN (SELECT Owner FROM Orders)",
+		"ExpectedLinq": "db.Users.Where(x => !((db.Orders).Any(o => o.Owner == x.Id))).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 161,
+		"Desc": "IN (szubkérdezés) WHERE-rel a belső lekérdezésben.",
+		"SqlInput": "SELECT Name FROM Users WHERE Id IN (SELECT Owner FROM Orders WHERE Qty > 1)",
+		"ExpectedLinq": "db.Users.Where(x => (db.Orders.Where(o => o.Qty > 1)).Any(o => o.Owner == x.Id)).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 162,
+		"Desc": "EXISTS szubkérdezés – alap eset.",
+		"SqlInput": "SELECT Name FROM Users WHERE EXISTS (SELECT 1 FROM Orders WHERE Owner = 1)",
+		"ExpectedLinq": "db.Users.Where(x => (db.Orders.Where(o => o.Owner == 1)).Any()).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 163,
+		"Desc": "NOT EXISTS szubkérdezés.",
+		"SqlInput": "SELECT Name FROM Users WHERE NOT EXISTS (SELECT 1 FROM Orders WHERE Owner = 1)",
+		"ExpectedLinq": "db.Users.Where(x => !(db.Orders.Where(o => o.Owner == 1)).Any()).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 164,
+		"Desc": "Korrelált EXISTS – külső alias hivatkozás.",
+		"SqlInput": "SELECT Name FROM Users u WHERE EXISTS (SELECT 1 FROM Orders o WHERE o.Owner = u.Id)",
+		"ExpectedLinq": "db.Users.Where(x => (db.Orders.Where(o => o.Owner == x.Id)).Any()).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 165,
+		"Desc": "Korrelált NOT EXISTS.",
+		"SqlInput": "SELECT Name FROM Users u WHERE NOT EXISTS (SELECT 1 FROM Orders o WHERE o.Owner = u.Id)",
+		"ExpectedLinq": "db.Users.Where(x => !(db.Orders.Where(o => o.Owner == x.Id)).Any()).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 166,
+		"Desc": "Korrelált IN (szubkérdezés) – külső alias hivatkozással.",
+		"SqlInput": "SELECT Name FROM Users u WHERE u.Id IN (SELECT Owner FROM Orders o WHERE o.Qty > 1)",
+		"ExpectedLinq": "db.Users.Where(x => (db.Orders.Where(o => o.Qty > 1)).Any(o => o.Owner == x.Id)).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 167,
+		"Desc": "Skaláris szubkérdezés SELECT-ben.",
+		"SqlInput": "SELECT Name, (SELECT MAX(Age) FROM Users) AS MaxAge FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, MaxAge = (db.Users.Max(u => u.Age)) }).ToList()"
+	},
+	{
+		"Id": 168,
+		"Desc": "Skaláris szubkérdezés WHERE-ben összehasonlítással.",
+		"SqlInput": "SELECT Name FROM Users WHERE Age = (SELECT MAX(Age) FROM Users)",
+		"ExpectedLinq": "db.Users.Where(x => x.Age == (db.Users.Max(u => u.Age))).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 169,
+		"Desc": "FROM-beli inline nézet WHERE-rel a külső lekérdezésben.",
+		"SqlInput": "SELECT Name FROM (SELECT Name, Age FROM Users) AS sub WHERE Age > 25",
+		"ExpectedLinq": "(db.Users.Select(x => new { x.Name, x.Age })).Where(x => x.Age > 25).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 170,
+		"Desc": "FROM-beli inline nézet ORDER BY-jal.",
+		"SqlInput": "SELECT Name FROM (SELECT Name, Age FROM Users WHERE Role = 'Admin') AS sub ORDER BY Age DESC",
+		"ExpectedLinq": "(db.Users.Where(x => x.Role == \"Admin\").Select(x => new { x.Name, x.Age })).OrderByDescending(x => x.Age).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 171,
+		"Desc": "EXISTS és AND kombinálva.",
+		"SqlInput": "SELECT Name FROM Users u WHERE Age > 20 AND EXISTS (SELECT 1 FROM Orders o WHERE o.Owner = u.Id)",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 20 && (db.Orders.Where(o => o.Owner == x.Id)).Any()).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 172,
+		"Desc": "Kétszintű egymásba ágyazott IN szubkérdezés.",
+		"SqlInput": "SELECT Name FROM Users WHERE Id IN (SELECT Owner FROM Orders WHERE Id IN (SELECT Parent FROM Products))",
+		"ExpectedLinq": "db.Users.Where(x => (db.Orders.Where(o => (db.Products).Any(p => p.Parent == o.Id))).Any(o => o.Owner == x.Id)).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 173,
+		"Desc": "Korrelált szubkérdezés SELECT-ben (skaláris).",
+		"SqlInput": "SELECT Name, (SELECT COUNT(*) FROM Orders o WHERE o.Owner = u.Id) AS OrderCount FROM Users u",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, OrderCount = (db.Orders.Where(o => o.Owner == x.Id).Count()) }).ToList()"
+	},
+	{
+		"Id": 174,
+		"Desc": "FROM-beli inline nézet LIMIT-tel.",
+		"SqlInput": "SELECT Name FROM (SELECT Name, Age FROM Users ORDER BY Age DESC LIMIT 3) AS top3",
+		"ExpectedLinq": "(db.Users.OrderByDescending(x => x.Age).Select(x => new { x.Name, x.Age }).Take(3)).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 175,
+		"Desc": "REPLACE függvény.",
+		"SqlInput": "SELECT REPLACE(Name, 'Bob', 'Robert') AS NewName FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { NewName = x.Name.Replace(\"Bob\", \"Robert\") }).ToList()"
+	},
+	{
+		"Id": 176,
+		"Desc": "CHARINDEX függvény.",
+		"SqlInput": "SELECT CHARINDEX('o', Name) AS Pos FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Pos = (x.Name).IndexOf(\"o\") + 1 }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 177,
+		"Desc": "YEAR függvény.",
+		"SqlInput": "SELECT YEAR(CreatedAt) AS Yr FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Yr = (x.CreatedAt).Value.Year }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 178,
+		"Desc": "GETDATE() függvény — WHERE-ben összehasonlítás.",
+		"SqlInput": "SELECT Name FROM Users WHERE CreatedAt < GETDATE()",
+		"ExpectedLinq": "db.Users.Where(x => x.CreatedAt < DateTime.Now).Select(x => new { x.Name }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 179,
+		"Desc": "CURRENT_DATE kulcsszó.",
+		"SqlInput": "SELECT Name FROM Users WHERE CreatedAt < CURRENT_DATE",
+		"ExpectedLinq": "db.Users.Where(x => x.CreatedAt < DateTime.Today).Select(x => new { x.Name }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 180,
+		"Desc": "DATEADD függvény — 'day' string literál part.",
+		"SqlInput": "SELECT DATEADD('day', 7, CreatedAt) AS NextWeek FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { NextWeek = (x.CreatedAt).Value.AddDays(7) }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 181,
+		"Desc": "DATEDIFF függvény — 'year' string literál part.",
+		"SqlInput": "SELECT DATEDIFF('year', CreatedAt, GETDATE()) AS Yrs FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Yrs = ((DateTime.Now).Year - (x.CreatedAt).Value.Year) }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 182,
+		"Desc": "DATEPART függvény — 'month' string literál part.",
+		"SqlInput": "SELECT DATEPART('month', CreatedAt) AS Mo FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Mo = (x.CreatedAt).Value.Month }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 183,
+		"Desc": "MONTH függvény — közvetlen hónap kinyerés.",
+		"SqlInput": "SELECT MONTH(CreatedAt) AS Mo FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { Mo = (x.CreatedAt).Value.Month }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 184,
+		"Desc": "DAY függvény — közvetlen nap kinyerés.",
+		"SqlInput": "SELECT DAY(CreatedAt) AS D FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { D = (x.CreatedAt).Value.Day }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 185,
+		"Desc": "LTRIM függvény.",
+		"SqlInput": "SELECT LTRIM(Name) AS Trimmed FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Trimmed = x.Name.TrimStart() }).ToList()"
+	},
+	{
+		"Id": 186,
+		"Desc": "RTRIM függvény.",
+		"SqlInput": "SELECT RTRIM(Name) AS Trimmed FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Trimmed = x.Name.TrimEnd() }).ToList()"
+	},
+	{
+		"Id": 187,
+		"Desc": "CONCAT függvény.",
+		"SqlInput": "SELECT CONCAT(Name, Role) AS Full FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Full = string.Concat(x.Name, x.Role) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 188,
+		"Desc": "INSTR függvény.",
+		"SqlInput": "SELECT INSTR(Name, 'o') AS Pos FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Pos = (x.Name).IndexOf(\"o\") + 1 }).ToList()"
+	},
+	{
+		"Id": 189,
+		"Desc": "REVERSE függvény.",
+		"SqlInput": "SELECT REVERSE(Name) AS Rev FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Rev = new string((x.Name).Reverse().ToArray()) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 190,
+		"Desc": "REPEAT függvény.",
+		"SqlInput": "SELECT REPEAT(Name, 2) AS Rep FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Rep = string.Concat(System.Linq.Enumerable.Repeat(x.Name, 2)) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 191,
+		"Desc": "SPACE függvény.",
+		"SqlInput": "SELECT SPACE(3) AS Spaces FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Spaces = new string(' ', 3) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 192,
+		"Desc": "LCASE függvény.",
+		"SqlInput": "SELECT LCASE(Name) AS Lower FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Lower = x.Name.ToLower() }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 193,
+		"Desc": "UCASE függvény.",
+		"SqlInput": "SELECT UCASE(Name) AS Upper FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Upper = x.Name.ToUpper() }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 194,
+		"Desc": "MOD operátor.",
+		"SqlInput": "SELECT Name, MOD(Age, 2) AS AgeRem FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, AgeRem = (x.Age) % (2) }).ToList()"
+	},
+	{
+		"Id": 195,
+		"Desc": "DATEADD month part.",
+		"SqlInput": "SELECT Name, DATEADD('month', 1, CreatedAt) AS NextMonth FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, NextMonth = (x.CreatedAt).Value.AddMonths(1) }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 196,
+		"Desc": "DATEADD year part.",
+		"SqlInput": "SELECT Name, DATEADD('year', 1, CreatedAt) AS NextYear FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, NextYear = (x.CreatedAt).Value.AddYears(1) }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 197,
+		"Desc": "DATEADD hour part.",
+		"SqlInput": "SELECT Name, DATEADD('hour', 2, CreatedAt) AS Later FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Later = (x.CreatedAt).Value.AddHours(2) }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 198,
+		"Desc": "DATEDIFF day part.",
+		"SqlInput": "SELECT Name, DATEDIFF('day', CreatedAt, GETDATE()) AS DaysSince FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, DaysSince = (int)((DateTime.Now) - (x.CreatedAt).Value).TotalDays }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 199,
+		"Desc": "DATEDIFF month part.",
+		"SqlInput": "SELECT Name, DATEDIFF('month', CreatedAt, GETDATE()) AS MonthsSince FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, MonthsSince = (((DateTime.Now).Year - (x.CreatedAt).Value.Year) * 12 + (DateTime.Now).Month - (x.CreatedAt).Value.Month) }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 200,
+		"Desc": "DATEPART day part.",
+		"SqlInput": "SELECT Name, DATEPART('day', CreatedAt) AS D FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, D = (x.CreatedAt).Value.Day }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 201,
+		"Desc": "DATEPART year part.",
+		"SqlInput": "SELECT Name, DATEPART('year', CreatedAt) AS Yr FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Yr = (x.CreatedAt).Value.Year }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 202,
+		"Desc": "HOUR függvény.",
+		"SqlInput": "SELECT Name, HOUR(CreatedAt) AS Hr FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Hr = (x.CreatedAt).Value.Hour }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 203,
+		"Desc": "MINUTE függvény.",
+		"SqlInput": "SELECT Name, MINUTE(CreatedAt) AS Mi FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Mi = (x.CreatedAt).Value.Minute }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 204,
+		"Desc": "SECOND függvény.",
+		"SqlInput": "SELECT Name, SECOND(CreatedAt) AS Sc FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Sc = (x.CreatedAt).Value.Second }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 205,
+		"Desc": "CURRENT_TIMESTAMP kulcsszó.",
+		"SqlInput": "SELECT Name FROM Users WHERE CreatedAt < CURRENT_TIMESTAMP",
+		"ExpectedLinq": "db.Users.Where(x => x.CreatedAt < DateTime.Now).Select(x => new { x.Name }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 206,
+		"Desc": "TRUE literál WHERE-ben.",
+		"SqlInput": "SELECT Name FROM Users WHERE TRUE",
+		"ExpectedLinq": "db.Users.Where(x => true).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 207,
+		"Desc": "FALSE literál WHERE-ben.",
+		"SqlInput": "SELECT Name FROM Users WHERE FALSE",
+		"ExpectedLinq": "db.Users.Where(x => false).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 208,
+		"Desc": "TRUE CASE WHEN THEN-ben.",
+		"SqlInput": "SELECT Name, CASE WHEN Age > 18 THEN TRUE ELSE FALSE END AS IsAdult FROM Users",
+		"ExpectedLinq": "db.Users.Select(x => new { x.Name, IsAdult = (x.Age > 18 ? true : false) }).ToList()",
+		"SemanticSkip": "sqlite-bool"
+	},
+	{
+		"Id": 209,
+		"Desc": "Float literál WHERE-ben.",
+		"SqlInput": "SELECT Name FROM Users WHERE Age > 18.5",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 18.5).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 210,
+		"Desc": "Float literál SELECT-ben kifejezésben.",
+		"SqlInput": "SELECT Name, Points * 1.5 AS Bonus FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Bonus = x.Points * 1.5 }).ToList()"
+	},
+	{
+		"Id": 211,
+		"Desc": "COUNT(DISTINCT col) GROUP BY-ban.",
+		"SqlInput": "SELECT Role, COUNT(DISTINCT Name) AS UniqueName FROM Users GROUP BY Role",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).Select(g => new { Role = g.Key, UniqueName = g.Select(x => x.Name).Distinct().Count() }).ToList()"
+	},
+	{
+		"Id": 212,
+		"Desc": "CEILING függvény.",
+		"SqlInput": "SELECT CEILING(Age) AS C FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { C = Math.Ceiling((double)(x.Age)) }).ToList()"
+	},
+	{
+		"Id": 213,
+		"Desc": "STR függvény — szám stringgé alakítása.",
+		"SqlInput": "SELECT STR(Age) AS AgeStr FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { AgeStr = (x.Age).ToString() }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 214,
+		"Desc": "STUFF függvény — string részének cseréje.",
+		"SqlInput": "SELECT STUFF(Name, 2, 1, 'X') AS Stuffed FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { Stuffed = (x.Name).Remove(2 - 1, 1).Insert(2 - 1, \"X\") }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 215,
+		"Desc": "DATEADD minute part.",
+		"SqlInput": "SELECT Name, DATEADD('minute', 30, CreatedAt) AS Later FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Later = (x.CreatedAt).Value.AddMinutes(30) }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 216,
+		"Desc": "DATEADD second part.",
+		"SqlInput": "SELECT Name, DATEADD('second', 45, CreatedAt) AS Later FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Later = (x.CreatedAt).Value.AddSeconds(45) }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 217,
+		"Desc": "DATEDIFF hour part.",
+		"SqlInput": "SELECT Name, DATEDIFF('hour', CreatedAt, GETDATE()) AS HoursSince FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, HoursSince = (int)((DateTime.Now) - (x.CreatedAt).Value).TotalHours }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 218,
+		"Desc": "DATEDIFF minute part.",
+		"SqlInput": "SELECT Name, DATEDIFF('minute', CreatedAt, GETDATE()) AS MinutesSince FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, MinutesSince = (int)((DateTime.Now) - (x.CreatedAt).Value).TotalMinutes }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 219,
+		"Desc": "DATEDIFF second part.",
+		"SqlInput": "SELECT Name, DATEDIFF('second', CreatedAt, GETDATE()) AS SecondsSince FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, SecondsSince = (int)((DateTime.Now) - (x.CreatedAt).Value).TotalSeconds }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 220,
+		"Desc": "DATEPART hour part.",
+		"SqlInput": "SELECT Name, DATEPART('hour', CreatedAt) AS Hr FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Hr = (x.CreatedAt).Value.Hour }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 221,
+		"Desc": "DATEPART minute part.",
+		"SqlInput": "SELECT Name, DATEPART('minute', CreatedAt) AS Mi FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Mi = (x.CreatedAt).Value.Minute }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 222,
+		"Desc": "DATEPART second part.",
+		"SqlInput": "SELECT Name, DATEPART('second', CreatedAt) AS Sc FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Sc = (x.CreatedAt).Value.Second }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 223,
+		"Desc": "FORMAT dátum formázás.",
+		"SqlInput": "SELECT Name, FORMAT(CreatedAt, 'yyyy-MM-dd') AS Formatted FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, Formatted = (x.CreatedAt)!.ToString(\"yyyy-MM-dd\") }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 224,
+		"Desc": "NOW() függvény — alias a GETDATE()-re.",
+		"SqlInput": "SELECT Name FROM Users WHERE CreatedAt < NOW()",
+		"ExpectedLinq": "db.Users.Where(x => x.CreatedAt < DateTime.Now).Select(x => new { x.Name }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 225,
+		"Desc": "CURDATE() függvény — alias a CURRENT_DATE-re.",
+		"SqlInput": "SELECT Name FROM Users WHERE CreatedAt < CURDATE()",
+		"ExpectedLinq": "db.Users.Where(x => x.CreatedAt < DateTime.Today).Select(x => new { x.Name }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 226,
+		"Desc": "GETUTCDATE() függvény.",
+		"SqlInput": "SELECT Name FROM Users WHERE CreatedAt < GETUTCDATE()",
+		"ExpectedLinq": "db.Users.Where(x => x.CreatedAt < DateTime.UtcNow).Select(x => new { x.Name }).ToList()",
+		"SemanticSkip": "sqlite-date"
+	},
+	{
+		"Id": 227,
+		"Desc": "RAND() függvény SELECT-ben.",
+		"SqlInput": "SELECT Name, RAND() AS R FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, R = new Random().NextDouble() }).ToList()",
+		"SemanticSkip": "nondeterministic"
+	},
+	{
+		"Id": 228,
+		"Desc": "IN szubkérdezés inline nézettel (from-clause subquery).",
+		"SqlInput": "SELECT Name FROM Users WHERE Id IN (SELECT Id FROM (SELECT Id, Age FROM Users WHERE Age > 20) AS sub)",
+		"ExpectedLinq": "db.Users.Where(x => ((db.Users.Where(u => u.Age > 20).Select(u => new { u.Id, u.Age })).Select(x => x.Id)).Contains(x.Id)).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 229,
+		"Desc": "GROUP BY + ORDER BY aggregátum aliasára.",
+		"SqlInput": "SELECT Role, COUNT(*) AS Cnt FROM Users GROUP BY Role ORDER BY Cnt ASC",
+		"ExpectedLinq": "db.Users.GroupBy(x => x.Role).OrderBy(g => g.Count()).Select(g => new { Role = g.Key, Cnt = g.Count() }).ToList()"
+	},
+	{
+		"Id": 230,
+		"Desc": "LEN függvény — string hossza (MSSQL alias).",
+		"SqlInput": "SELECT Name, LEN(Name) AS L FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, L = x.Name.Length }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 231,
+		"Desc": "ISNULL függvény — null helyettesítés (MSSQL alias).",
+		"SqlInput": "SELECT Name, ISNULL(Bonus, 0) AS B FROM Users WHERE Name = 'Bcb'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bcb\").Select(x => new { x.Name, B = (x.Bonus ?? 0) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 232,
+		"Desc": "NVL függvény — null helyettesítés (Oracle alias).",
+		"SqlInput": "SELECT Name, NVL(Bonus, 99) AS B FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, B = (x.Bonus ?? 99) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 233,
+		"Desc": "TRUNCATE függvény — tizedes csonkítás.",
+		"SqlInput": "SELECT Name, TRUNCATE(Age, 0) AS T FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, T = Math.Floor((double)(x.Age) * Math.Pow(10, 0)) / Math.Pow(10, 0) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 234,
+		"Desc": "LOG függvény — természetes logaritmus.",
+		"SqlInput": "SELECT Name, LOG(Age) AS L FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, L = Math.Log((double)(x.Age)) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 235,
+		"Desc": "LOG10 függvény — tízes alapú logaritmus.",
+		"SqlInput": "SELECT Name, LOG10(Age) AS L FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, L = Math.Log10((double)(x.Age)) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 236,
+		"Desc": "EXP függvény — e hatványa.",
+		"SqlInput": "SELECT Name, EXP(1) AS E FROM Users WHERE Name = 'Bob'",
+		"ExpectedLinq": "db.Users.Where(x => x.Name == \"Bob\").Select(x => new { x.Name, E = Math.Exp((double)(1)) }).ToList()",
+		"SemanticSkip": "sqlite-function"
+	},
+	{
+		"Id": 237,
+		"Desc": "DELETE WHERE feltétellel.",
+		"SqlInput": "DELETE FROM Users WHERE Age < 18",
+		"ExpectedLinq": "db.Users.Where(x => x.Age < 18).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 238,
+		"Desc": "DELETE WHERE nélkül — teljes tábla törlése.",
+		"SqlInput": "DELETE FROM Users",
+		"ExpectedLinq": "db.Users.ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 239,
+		"Desc": "DELETE LIKE feltétellel.",
+		"SqlInput": "DELETE FROM Users WHERE Name LIKE 'B%'",
+		"ExpectedLinq": "db.Users.Where(x => EF.Functions.Like(x.Name, \"B%\")).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 240,
+		"Desc": "DELETE AND feltétellel.",
+		"SqlInput": "DELETE FROM Users WHERE Age > 20 AND Role = 'User'",
+		"ExpectedLinq": "db.Users.Where(x => x.Age > 20 && x.Role == \"User\").ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 241,
+		"Desc": "DELETE IN listával.",
+		"SqlInput": "DELETE FROM Users WHERE Role IN ('Admin', 'Moderator')",
+		"ExpectedLinq": "db.Users.Where(x => new string[] { \"Admin\", \"Moderator\" }.Contains(x.Role)).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 242,
+		"Desc": "DELETE IS NULL feltétellel.",
+		"SqlInput": "DELETE FROM Orders WHERE Owner IS NULL",
+		"ExpectedLinq": "db.Orders.Where(x => x.Owner == null).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 243,
+		"Desc": "DELETE IN szubkérdezéssel.",
+		"SqlInput": "DELETE FROM Orders WHERE Owner IN (SELECT Id FROM Users WHERE Role = 'Admin')",
+		"ExpectedLinq": "db.Orders.Where(x => (db.Users.Where(u => u.Role == \"Admin\")).Any(u => u.Id == x.Owner)).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 244,
+		"Desc": "DELETE EXISTS korrelált szubkérdezéssel.",
+		"SqlInput": "DELETE FROM Users u WHERE EXISTS (SELECT 1 FROM Orders o WHERE o.Owner = u.Id)",
+		"ExpectedLinq": "db.Users.Where(x => (db.Orders.Where(o => o.Owner == x.Id)).Any()).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 245,
+		"Desc": "DELETE NOT EXISTS korrelált szubkérdezéssel.",
+		"SqlInput": "DELETE FROM Users u WHERE NOT EXISTS (SELECT 1 FROM Orders o WHERE o.Owner = u.Id)",
+		"ExpectedLinq": "db.Users.Where(x => !(db.Orders.Where(o => o.Owner == x.Id)).Any()).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 246,
+		"Desc": "DELETE BETWEEN feltétellel.",
+		"SqlInput": "DELETE FROM Users WHERE Age BETWEEN 18 AND 25",
+		"ExpectedLinq": "db.Users.Where(x => x.Age >= 18 && x.Age <= 25).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 247,
+		"Desc": "DELETE OR feltétellel.",
+		"SqlInput": "DELETE FROM Users WHERE Role = 'Admin' OR Role = 'Moderator'",
+		"ExpectedLinq": "db.Users.Where(x => x.Role == \"Admin\" || x.Role == \"Moderator\").ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 248,
+		"Desc": "DELETE IS NOT NULL feltétellel.",
+		"SqlInput": "DELETE FROM Users WHERE Bonus IS NOT NULL",
+		"ExpectedLinq": "db.Users.Where(x => x.Bonus != null).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 249,
+		"Desc": "DELETE NOT IN listával.",
+		"SqlInput": "DELETE FROM Users WHERE Role NOT IN ('Admin', 'Moderator')",
+		"ExpectedLinq": "db.Users.Where(x => !(new string[] { \"Admin\", \"Moderator\" }.Contains(x.Role))).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 250,
+		"Desc": "DELETE IN korrelált szubkérdezéssel aliasokkal.",
+		"SqlInput": "DELETE FROM Orders o WHERE o.Owner IN (SELECT u.Id FROM Users u WHERE u.Role = 'Admin')",
+		"ExpectedLinq": "db.Orders.Where(x => (db.Users.Where(u => u.Role == \"Admin\")).Any(u => u.Id == x.Owner)).ExecuteDeleteAsync()",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 251,
+		"Desc": "INSERT INTO egyszerű eset explicit oszloplistával.",
+		"SqlInput": "INSERT INTO Users (Name, Age, Role) VALUES ('Bob', 25, 'Admin')",
+		"ExpectedLinq": "db.Users.Add(new Users { Name = \"Bob\", Age = 25, Role = \"Admin\" });\ndb.SaveChanges();",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 252,
+		"Desc": "INSERT INTO oszloplista nélkül.",
+		"SqlInput": "INSERT INTO Users VALUES ('Bob', 25, 'Admin')",
+		"ExpectedLinq": "db.Users.Add(new Users { Col1 = \"Bob\", Col2 = 25, Col3 = \"Admin\" });\ndb.SaveChanges();",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 253,
+		"Desc": "INSERT INTO NULL értékkel.",
+		"SqlInput": "INSERT INTO Users (Name, Age, Bonus) VALUES ('Alice', 19, NULL)",
+		"ExpectedLinq": "db.Users.Add(new Users { Name = \"Alice\", Age = 19, Bonus = null });\ndb.SaveChanges();",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 254,
+		"Desc": "INSERT INTO több sorral (AddRange).",
+		"SqlInput": "INSERT INTO Users (Name, Age) VALUES ('Bob', 25), ('Alice', 19)",
+		"ExpectedLinq": "db.Users.AddRange(new List<Users>\n{\n    new Users { Name = \"Bob\", Age = 25 },\n    new Users { Name = \"Alice\", Age = 19 }\n});\ndb.SaveChanges();",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 255,
+		"Desc": "INSERT INTO kifejezéssel VALUE-ban.",
+		"SqlInput": "INSERT INTO Orders (Owner, Qty) VALUES (1, 2 + 3)",
+		"ExpectedLinq": "db.Orders.Add(new Orders { Owner = 1, Qty = 2 + 3 });\ndb.SaveChanges();",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 256,
+		"Desc": "INSERT INTO ... SELECT egyszerű WHERE feltétellel.",
+		"SqlInput": "INSERT INTO Orders (Owner, Item, Qty) SELECT Id, 'Default', 0 FROM Users WHERE Role = 'Admin'",
+		"ExpectedLinq": "db.Orders.AddRange((db.Users.Where(x => x.Role == \"Admin\")).Select(x => new Orders { Owner = x.Id, Item = \"Default\", Qty = 0 }).ToList());\ndb.SaveChanges();",
+		"SemanticSkip": "dml"
+	},
+	{
+	  "Id": 257,
+	  "Desc": "INSERT INTO ... SELECT WHERE nélkül, teljes tábla.",
+	  "SqlInput": "INSERT INTO Orders (Owner, Qty) SELECT Id, Points FROM Users",
+	  "ExpectedLinq": "db.Orders.AddRange((db.Users).Select(x => new Orders { Owner = x.Id, Qty = x.Points }).ToList());\ndb.SaveChanges();",
+		"SemanticSkip": "dml"
+	},
+	{
+	  "Id": 258,
+	  "Desc": "UPDATE WHERE feltétellel, konstans érték.",
+	  "SqlInput": "UPDATE Users SET Role = 'Admin' WHERE Age > 30",
+	  "ExpectedLinq": "db.Users.Where(x => x.Age > 30).ExecuteUpdateAsync(s => s\n.SetProperty(x => x.Role, \"Admin\"))",
+		"SemanticSkip": "dml"
+	},
+	{
+	  "Id": 259,
+	  "Desc": "UPDATE WHERE nélkül, teljes tábla.",
+	  "SqlInput": "UPDATE Users SET Points = 0",
+	  "ExpectedLinq": "db.Users.ExecuteUpdateAsync(s => s\n.SetProperty(x => x.Points, 0))",
+		"SemanticSkip": "dml"
+	},
+	{
+	  "Id": 260,
+	  "Desc": "UPDATE több SET oszloppal, vegyes konstans és számítás.",
+	  "SqlInput": "UPDATE Users SET Points = Points + 10, Bonus = 0 WHERE Role = 'User'",
+	  "ExpectedLinq": "db.Users.Where(x => x.Role == \"User\").ExecuteUpdateAsync(s => s\n.SetProperty(x => x.Points, x => x.Points + 10)\n        .SetProperty(x => x.Bonus, 0))",
+		"SemanticSkip": "dml"
+	},
+	{
+	  "Id": 261,
+	  "Desc": "UPDATE oszlop értékét saját magára hivatkozó kifejezéssel.",
+	  "SqlInput": "UPDATE Users SET Points = Points * 2 WHERE Role = 'Admin'",
+	  "ExpectedLinq": "db.Users.Where(x => x.Role == \"Admin\").ExecuteUpdateAsync(s => s\n.SetProperty(x => x.Points, x => x.Points * 2))",
+		"SemanticSkip": "dml"
+	},
+	{
+	  "Id": 262,
+	  "Desc": "UPDATE NULL értékkel.",
+	  "SqlInput": "UPDATE Users SET Bonus = NULL WHERE Age < 18",
+	  "ExpectedLinq": "db.Users.Where(x => x.Age < 18).ExecuteUpdateAsync(s => s\n.SetProperty(x => x.Bonus, x => null))",
+		"SemanticSkip": "dml"
+	},
+	{
+	  "Id": 263,
+	  "Desc": "UPDATE CASE WHEN kifejezéssel a SET-ben.",
+	  "SqlInput": "UPDATE Users SET Role = CASE WHEN Age >= 18 THEN 'Admin' ELSE 'User' END WHERE Points > 50",
+	  "ExpectedLinq": "db.Users.Where(x => x.Points > 50).ExecuteUpdateAsync(s => s\n.SetProperty(x => x.Role, x => (x.Age >= 18 ? \"Admin\" : \"User\")))",
+		"SemanticSkip": "dml"
+	},
+	{
+	  "Id": 264,
+	  "Desc": "UPDATE WHERE IN listával.",
+	  "SqlInput": "UPDATE Users SET Role = 'Moderator' WHERE Id IN (1, 2, 3)",
+	  "ExpectedLinq": "db.Users.Where(x => new int?[] { 1, 2, 3 }.Contains(x.Id)).ExecuteUpdateAsync(s => s\n.SetProperty(x => x.Role, \"Moderator\"))",
+		"SemanticSkip": "dml"
+	},
+	{
+		"Id": 265,
+		"Desc": "Több zárójel.",
+		"SqlInput": "SELECT Name FROM Users WHERE Id IN (((SELECT Owner FROM Orders)))",
+		"ExpectedLinq": "db.Users.Where(x => (db.Orders).Any(o => o.Owner == x.Id)).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 266,
+		"Desc": "Több pontosvessző.",
+		"SqlInput": "SELECT Name FROM Users WHERE Id IN (SELECT Owner FROM Orders);;;;;;;",
+		"ExpectedLinq": "db.Users.Where(x => (db.Orders).Any(o => o.Owner == x.Id)).Select(x => new { x.Name }).ToList()"
+	},
+	{
+		"Id": 267,
+		"Desc": "ORDER BY kifejezés aliasára GROUP BY nélkül.",
+		"SqlInput": "SELECT Name, Age * 2 AS A FROM Users ORDER BY A",
+		"ExpectedLinq": "db.Users.OrderBy(x => x.Age * 2).Select(x => new { x.Name, A = x.Age * 2 }).ToList()"
+	}
+]

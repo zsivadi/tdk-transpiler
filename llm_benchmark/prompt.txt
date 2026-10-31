@@ -1,0 +1,4 @@
+Convert the following SQL query to C# LINQ method syntax compatible with Entity Framework Core 8. Respond with the LINQ expression only, without any explanation or markdown formatting.
+
+SQL:
+{sql}

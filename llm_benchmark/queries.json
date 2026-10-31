@@ -1,0 +1,27 @@
+[
+  {
+    "id": "Q1",
+    "desc": "Egyszerű szűrés és rendezés",
+    "sql": "SELECT Name, Age FROM Users WHERE Age > 18 ORDER BY Name ASC"
+  },
+  {
+    "id": "Q2",
+    "desc": "Csoportosítás, HAVING, rendezés aggregátum aliasára",
+    "sql": "SELECT Role, COUNT(*) AS Cnt FROM Users WHERE Age >= 18 GROUP BY Role HAVING COUNT(*) > 1 ORDER BY Cnt DESC"
+  },
+  {
+    "id": "Q3",
+    "desc": "Kéttáblás LEFT JOIN szűréssel, rendezéssel, lapozással",
+    "sql": "SELECT u.Name, o.Item FROM Users u LEFT JOIN Orders o ON u.Id = o.Owner WHERE u.Age >= 25 ORDER BY u.Name DESC LIMIT 4"
+  },
+  {
+    "id": "Q4",
+    "desc": "CASE WHEN és korrelált EXISTS allekérdezés",
+    "sql": "SELECT Name, CASE WHEN Age > 40 THEN 'Senior' WHEN Age > 25 THEN 'Mid' ELSE 'Junior' END AS Level FROM Users u WHERE EXISTS (SELECT 1 FROM Orders o WHERE o.Owner = u.Id) ORDER BY Name ASC"
+  },
+  {
+    "id": "Q5",
+    "desc": "Háromtáblás JOIN összetett feltétellel, LIKE, rendezés, LIMIT és OFFSET",
+    "sql": "SELECT u.Name, o.Item, p.Title FROM Users u JOIN Orders o ON u.Id = o.Owner JOIN Products p ON o.Id = p.Parent WHERE u.Name LIKE 'B%' AND (o.Qty >= 1 OR p.Price < 20) ORDER BY p.Price DESC LIMIT 5 OFFSET 1"
+  }
+]

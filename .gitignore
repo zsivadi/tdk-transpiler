@@ -8,18 +8,30 @@
 !/Documentation/
 !/SqlToLinq.Core/
 !/SqlToLinq.Web/
+!/SqlToLinq.Tests/
+!/llm_benchmark/
 !/SqlToLinq.slnx
 !/LICENSE
+!/README.md
 
-
+# LaTeX build files
 *.aux
 *.bbl
 *.blg
 *.out
 *.toc
+*.thm
+*.lof
+*.lot
 *.synctex.gz
+*.synctex(busy)
 *.fdb_latexmk
 *.fls
+_minted*/
+*.minted
+
+# Python virtual environment
+.venv/
 
 # dotenv files
 .env
